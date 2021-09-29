@@ -34,13 +34,20 @@ async function getRandomUser(){
      //create the new user
      const newUser = {
          name:`${user.name.first} ${user.name.last}`,
-         balance:Math.floor(Math.random()*10000),
+         balance:Math.floor(Math.random()*100000),
      }
     //  console.log(newUser);
 
      //add the new user into the data array
       addData(newUser);
      
+};
+//function add double money...
+function DoubleMoney(){
+     data = data.map(user=>{
+        return {...user,balance: user.balance*2}
+     });
+     updateDom();
 };
 
 //function to add user data to user data array
@@ -51,16 +58,34 @@ async function getRandomUser(){
     //  console.log('data array',data);
     updateDom();
 };
+
+    //function to formate randon number as money
+    
+    function formateNumberToDollar(number){
+        return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    };
+
     //update the UI with data from the user array
     function updateDom(userData = data){
+        main.innerHTML = ' <h2><strong>User</strong> Wealth</h2>'
         userData.forEach(user =>{
             const userDiv = document.createElement('div');
             userDiv.classList.add('user');
-            userDiv.innerHTML = `<strong>${user.name}</strong><b>${user.balance}</b>`
+            userDiv.innerHTML = `<strong>${user.name}</strong><b>
+                ${ formateNumberToDollar(user.balance)}</b>`
             main.appendChild(userDiv);
         })
-    }
+    };
+
+    //add event listener for add users..
+    addUser.addEventListener('click',(e)=>{
+        getRandomUser()
+        
+    });
+    //2. eventlistener double money
+    double.addEventListener('click',DoubleMoney)
 
 
 getRandomUser(); 
-getRandomUser(); 
+
+
